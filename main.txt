@@ -1,0 +1,34 @@
+name: Run Spike Workflow
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 */3 * * *'  
+  workflow_dispatch:
+
+jobs:
+  run_spike_workflow:
+    runs-on: ubuntu-22.04  
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v2
+
+      - name: Set up Spike binaries
+        run: |
+          chmod +x Spike   # Makes the 'Spike' file executable
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Spike.py
+        run: |
+          python3 Spike.py
